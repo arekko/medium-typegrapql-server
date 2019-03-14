@@ -1,14 +1,32 @@
-import { ApolloServer } from 'apollo-server-express'
-import * as Express from 'express'
-import { buildSchema} from 'type-graphql'
+import { ApolloServer } from "apollo-server-express";
+import * as Express from "express";
+import "reflect-metadata";
+import { buildSchema, Query, Resolver } from "type-graphql";
 
-
-const main = async = () => {
-
-const schema = await buildSchema({
-  resolvers: [FirstResolver, SampleResolver],
-});
+@Resolver()
+class HelloResolver {
+  @Query(() => String, { name: "helloWorld" })
+  async hello() {
+    // return "hello";
+    return null;
+  }
 }
 
+const main = async () => {
+  const schema = await buildSchema({
+    resolvers: [HelloResolver]
+  });
 
-main()
+  const apolloServer = new ApolloServer({ schema });
+  const app = Express();
+
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(4000, () => {
+    console.log("====================================");
+    console.log("Server started on http://localhost:4000");
+    console.log("====================================");
+  });
+};
+
+main();

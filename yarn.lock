@@ -3106,10 +3106,10 @@ tslib@^1.9.0, tslib@^1.9.3:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
 
-type-graphql@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/type-graphql/-/type-graphql-0.17.0.tgz#7a9b1cd91f84064b8150dacbbb232d2dbdbdcba2"
-  integrity sha512-eUPH8l5bjR7dSs09mEmRHY4aoMint8PiT0WAZDmDgbqd9fsaoMh6OvHHv92vDOzHf2L91pjUbMyrEb8ejceMpg==
+type-graphql@0.17.0-beta.9:
+  version "0.17.0-beta.9"
+  resolved "https://registry.yarnpkg.com/type-graphql/-/type-graphql-0.17.0-beta.9.tgz#971cca4f1453ecf861926923811a3da663b32150"
+  integrity sha512-lodPvN3LjHsyZXtfPvZLP/PPFv22HCLZaZlZb9jctf7HJCAzl0WEMQVUXX4ksmFlLb3BVZA64vibafPmgo+/Yw==
   dependencies:
     "@types/glob" "^7.1.1"
     "@types/node" "^11.9.4"

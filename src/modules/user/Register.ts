@@ -1,33 +1,46 @@
 import bcrypt from "bcryptjs";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { User } from "../../entity/User";
+import { isAuth } from "../../middleware/isAuth";
 import { RegisterInput } from "./register/RegisterInput";
+import { Error } from "./shared/Error";
 
 @Resolver()
 export class RegisterResolver {
-  @Query(() => String, { name: "helloWorld" })
-  async hello() {
-    // return "hello";
-    return null;
+  @UseMiddleware([isAuth])
+  @Query(() => String)
+  async hello(@Arg("id") id: number) {
+    return id;
   }
 
-  @Mutation(() => User)
+  @Mutation(() => [Error], { nullable: true })
   async register(@Arg("data")
   {
-    firstName,
-    lastName,
+    fullname,
+    username,
     email,
     password
-  }: RegisterInput): Promise<User> {
+  }: RegisterInput): Promise<Error[] | null> {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      firstName,
-      lastName,
+    const emailAlreadyExists = await User.findOne({ where: { email } });
+
+    if (emailAlreadyExists) {
+      return [
+        {
+          path: "email",
+          message: "Email already exists"
+        }
+      ];
+    }
+
+    await User.create({
+      fullname,
+      username,
       email,
       password: hashedPassword
     }).save();
 
-    return user;
+    return null;
   }
 }

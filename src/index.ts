@@ -1,12 +1,14 @@
 import { ApolloServer } from "apollo-server-express";
 import connectRedis from "connect-redis";
-import cors from "cors";
 import Express from "express";
 import session from "express-session";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
+import { GetArticleResolver } from "./modules/article/getArticle/GetArticle";
+import { GetArticles } from "./modules/article/getArticles/GetArticles";
 import { LoginResolver } from "./modules/user/Login";
+import { LogoutResolver } from "./modules/user/Logout";
 import { MeResolver } from "./modules/user/Me";
 import { RegisterResolver } from "./modules/user/Register";
 import { redis } from "./redis";
@@ -15,23 +17,26 @@ const main = async () => {
   await createConnection();
 
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver]
+    resolvers: [
+      RegisterResolver,
+      LoginResolver,
+      MeResolver,
+      GetArticles,
+      LogoutResolver,
+      GetArticleResolver
+    ]
+    // authChecker: ({ context: { req } }) => {
+    // return !!req.session.userId;
+    // }
   });
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req }) => ({ req })
+    context: ({ req, res }) => ({ req, res })
   });
   const app = Express();
 
   const RedisStore = connectRedis(session);
-
-  app.use(
-    cors({
-      credentials: true,
-      origin: "http://localhost:3000"
-    })
-  );
 
   const sessionOption: session.SessionOptions = {
     store: new RedisStore({
@@ -50,7 +55,15 @@ const main = async () => {
 
   app.use(session(sessionOption));
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: {
+      credentials: true,
+      origin: "http://localhost:3000"
+    }
+  });
+
+  // apolloServer.applyMiddleware({ app });
 
   app.listen(4000, () => {
     console.log("====================================");

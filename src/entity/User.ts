@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 import { Article } from "./Article";
+import { Bookmark } from "./Bookmark";
 
 @ObjectType()
 @Entity("users")
@@ -50,4 +51,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Article, article => article.user)
   articles: Article[];
+
+  @OneToMany(() => Bookmark, bookmark => bookmark.user)
+  bookmarks: Bookmark[];
 }

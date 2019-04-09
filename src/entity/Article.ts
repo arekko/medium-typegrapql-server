@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
+import { Bookmark } from "./Bookmark";
 import { User } from "./User";
 
 @ObjectType()
@@ -42,4 +44,7 @@ export class Article extends BaseEntity {
 
   @Field()
   owner: User;
+
+  @OneToMany(() => Bookmark, bookmark => bookmark.article)
+  bookmarks: Bookmark[];
 }

@@ -7,6 +7,7 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { GetArticleResolver } from "./modules/article/getArticle/GetArticle";
 import { GetArticles } from "./modules/article/getArticles/GetArticles";
+import { BookmarkResolver } from "./modules/user/Bookmark";
 import { LoginResolver } from "./modules/user/Login";
 import { LogoutResolver } from "./modules/user/Logout";
 import { MeResolver } from "./modules/user/Me";
@@ -23,7 +24,8 @@ const main = async () => {
       MeResolver,
       GetArticles,
       LogoutResolver,
-      GetArticleResolver
+      GetArticleResolver,
+      BookmarkResolver
     ]
     // authChecker: ({ context: { req } }) => {
     // return !!req.session.userId;

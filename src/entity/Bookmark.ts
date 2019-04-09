@@ -7,8 +7,8 @@ import {
 } from "typeorm";
 
 @ObjectType()
-@Entity("articles")
-export class Article extends BaseEntity {
+@Entity("bookmarks")
+export class Bookmark extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   bid: number;
